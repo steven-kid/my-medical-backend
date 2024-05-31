@@ -8,7 +8,7 @@ const ORIGIN = process.env.ORIGIN;
 console.log('CORS allowed origin:', ORIGIN);
 
 app.use(cors({
-  origin: ORIGIN, // React 应用的地址
+  origin: "https://my-medical-frontend.vercel.app", // React 应用的地址
   methods: ['GET', 'POST'],
   allowedHeaders: ['Content-Type']
 }));
