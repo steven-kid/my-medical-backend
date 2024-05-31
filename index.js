@@ -30,8 +30,9 @@ app.get('/events', (req, res) => {
       index += chunkSize;
       res.write(`data: ${chunk}\n\n`);
     } else {
-      console.log("All data sent, repeating...");
-      clearInterval(intervalId); // 清除定时器
+        res.write('event: end\ndata: \n\n'); // 通知客户端所有数据已发送
+        clearInterval(intervalId);
+        res.end();
     }
   }, 500);
 
