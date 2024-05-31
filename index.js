@@ -1,21 +1,17 @@
 const express = require('express');
-const app = express();
 const cors = require('cors');
-require('dotenv').config();
-
-
-const ORIGIN = process.env.ORIGIN;
-console.log('CORS allowed origin:', ORIGIN);
+const app = express();
 
 app.use(cors({
-  origin: "https://my-medical-frontend.vercel.app", // React 应用的地址
-  methods: ['GET', 'POST'],
-  allowedHeaders: ['Content-Type']
+  origin: '*', // 允许所有域
+  methods: ['GET', 'POST'], // 允许的 HTTP 方法
+  allowedHeaders: ['Content-Type'],
+  credentials: true, // 如果你需要跨域传送cookies，就设为true
+  optionsSuccessStatus: 200 // 一些遗留浏览器(IE11, 各种SmartTV)兼容性
 }));
 
 app.get('/events', (req, res) => {
-  res.setHeader('Access-Control-Allow-Origin', "https://my-medical-frontend.vercel.app");
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Allow-Origin', '*'); // 这里也设置 '*'
   res.setHeader('Content-Type', 'text/event-stream');
   res.setHeader('Cache-Control', 'no-cache');
   res.setHeader('Connection', 'keep-alive');
@@ -32,9 +28,9 @@ app.get('/events', (req, res) => {
       index += chunkSize;
       res.write(`data: ${chunk}\n\n`);
     } else {
-        res.write('event: end\ndata: \n\n'); // 通知客户端所有数据已发送
-        clearInterval(intervalId);
-        res.end();
+      res.write('event: end\ndata: \n\n'); // 通知客户端所有数据已发送
+      clearInterval(intervalId);
+      res.end();
     }
   }, 500);
 
@@ -44,6 +40,5 @@ app.get('/events', (req, res) => {
   });
 });
 
-const PORT = process.env.PORT || 4000; // 默认到 4000 如果没有指定 PORT
-
+const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
