@@ -1,9 +1,14 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
+require('dotenv').config();
+
+
+const ORIGIN = process.env.ORIGIN;
+console.log('CORS allowed origin:', ORIGIN);
 
 app.use(cors({
-  origin: 'http://localhost:5173', // React 应用的地址
+  origin: ORIGIN, // React 应用的地址
   methods: ['GET', 'POST'],
   allowedHeaders: ['Content-Type']
 }));
@@ -36,5 +41,6 @@ app.get('/events', (req, res) => {
   });
 });
 
-const PORT = 4000;
+const PORT = process.env.PORT || 4000; // 默认到 4000 如果没有指定 PORT
+
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
