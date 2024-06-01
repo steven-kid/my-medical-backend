@@ -10,6 +10,10 @@ app.use(cors({
   optionsSuccessStatus: 200 // 一些遗留浏览器(IE11, 各种SmartTV)兼容性
 }));
 
+app.get('/', (req, res) => {
+  res.send('Express on vercel');
+})
+
 app.get('/events', (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*'); // 这里也设置 '*'
   res.setHeader('Content-Type', 'text/event-stream');
